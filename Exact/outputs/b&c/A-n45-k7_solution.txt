@@ -1,0 +1,25 @@
+Instance: A-n45-k7
+Capacity: 100  |  Vehicles used: 7
+Total distance: 1383
+
+Route 1: 1 -> 36 -> 40 -> 39 -> 9 -> 22 -> 7 -> 5 -> 27 -> 35 -> 3 -> 1
+  Load: 97/100   Distance: 154
+
+Route 2: 1 -> 13 -> 33 -> 14 -> 19 -> 8 -> 17 -> 21 -> 41 -> 1
+  Load: 95/100   Distance: 147
+
+Route 3: 1 -> 10 -> 26 -> 24 -> 43 -> 16 -> 11 -> 15 -> 1
+  Load: 98/100   Distance: 192
+
+Route 4: 1 -> 25 -> 45 -> 42 -> 28 -> 34 -> 1
+  Load: 97/100   Distance: 199
+
+Route 5: 1 -> 29 -> 4 -> 12 -> 44 -> 30 -> 32 -> 1
+  Load: 97/100   Distance: 231
+
+Route 6: 1 -> 18 -> 38 -> 31 -> 6 -> 23 -> 1
+  Load: 97/100   Distance: 217
+
+Route 7: 1 -> 20 -> 37 -> 2 -> 1
+  Load: 53/100   Distance: 243
+

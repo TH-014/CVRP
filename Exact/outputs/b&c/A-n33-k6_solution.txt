@@ -1,0 +1,22 @@
+Instance: A-n33-k6
+Capacity: 100  |  Vehicles used: 6
+Total distance: 836
+
+Route 1: 1 -> 2 -> 19 -> 7 -> 8 -> 14 -> 1
+  Load: 88/100   Distance: 75
+
+Route 2: 1 -> 6 -> 9 -> 4 -> 10 -> 16 -> 3 -> 20 -> 1
+  Load: 96/100   Distance: 164
+
+Route 3: 1 -> 13 -> 30 -> 21 -> 1
+  Load: 98/100   Distance: 206
+
+Route 4: 1 -> 15 -> 18 -> 12 -> 11 -> 33 -> 1
+  Load: 77/100   Distance: 91
+
+Route 5: 1 -> 22 -> 26 -> 17 -> 31 -> 28 -> 29 -> 1
+  Load: 100/100   Distance: 110
+
+Route 6: 1 -> 23 -> 5 -> 27 -> 25 -> 24 -> 32 -> 1
+  Load: 82/100   Distance: 190
+

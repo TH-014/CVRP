@@ -1,0 +1,26 @@
+
+============================================================
+Solving: ../../Dataset/A/A-n32-k5.vrp
+============================================================
+Instance: A-n32-k5
+Customers: 31  |  Depot: 1
+Capacity: 100  |  Vehicles: 5
+Total demand: 410  |  Tightness: 0.82
+  Heuristic upper bound: 1122.0
+  Solving root LP relaxation...
+  Root LP lower bound:   773.20
+  Gap: 31.09%
+  B&B limits — time_limit: 600s  |  max_nodes: 5000
+  Node 13: new best = 954.0
+  Node 29: new best = 941.0
+  Node 36: new best = 934.0
+  Node 63: new best = 926.0
+  Time limit reached after 184 nodes
+  B&B explored 184 nodes. Best cost: 926.0
+
+Final solution:
+  Cost        : 926
+  Routes used : 5
+  Time        : 601.9s
+  Saved: ../outputs/b&c/A-n32-k5_solution.txt
+  Saved: ../outputs/b&c/A-n32-k5_plot.png

@@ -1,0 +1,22 @@
+
+============================================================
+Solving: ../../Dataset/A/A-n45-k7.vrp
+============================================================
+Instance: A-n45-k7
+Customers: 44  |  Depot: 1
+Capacity: 100  |  Vehicles: 7
+Total demand: 634  |  Tightness: 0.91
+  Heuristic upper bound: 1383.0
+  Solving root LP relaxation...
+  Root LP lower bound:   1095.12
+  Gap: 20.82%
+  B&B limits — time_limit: 600s  |  max_nodes: 5000
+  Time limit reached after 16 nodes
+  B&B explored 16 nodes. Best cost: 1383.0
+
+Final solution:
+  Cost        : 1383
+  Routes used : 7
+  Time        : 624.9s
+  Saved: ../outputs/b&c/A-n45-k7_solution.txt
+  Saved: ../outputs/b&c/A-n45-k7_plot.png

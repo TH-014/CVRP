@@ -1,0 +1,26 @@
+
+============================================================
+Solving: ../../Dataset/A/A-n33-k6.vrp
+============================================================
+Instance: A-n33-k6
+Customers: 32  |  Depot: 1
+Capacity: 100  |  Vehicles: 6
+Total demand: 541  |  Tightness: 0.90
+  Heuristic upper bound: 1016.0
+  Solving root LP relaxation...
+  Root LP lower bound:   730.60
+  Gap: 28.09%
+  B&B limits — time_limit: 600s  |  max_nodes: 5000
+  Node 13: new best = 869.0
+  Node 17: new best = 864.0
+  Node 31: new best = 841.0
+  Node 35: new best = 836.0
+  Time limit reached after 140 nodes
+  B&B explored 140 nodes. Best cost: 836.0
+
+Final solution:
+  Cost        : 836
+  Routes used : 6
+  Time        : 601.7s
+  Saved: ../outputs/b&c/A-n33-k6_solution.txt
+  Saved: ../outputs/b&c/A-n33-k6_plot.png

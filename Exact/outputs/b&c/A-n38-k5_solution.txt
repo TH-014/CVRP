@@ -1,0 +1,19 @@
+Instance: A-n38-k5
+Capacity: 100  |  Vehicles used: 5
+Total distance: 986
+
+Route 1: 1 -> 6 -> 23 -> 21 -> 33 -> 16 -> 15 -> 1
+  Load: 97/100   Distance: 168
+
+Route 2: 1 -> 8 -> 28 -> 12 -> 32 -> 35 -> 30 -> 1
+  Load: 98/100   Distance: 167
+
+Route 3: 1 -> 11 -> 31 -> 24 -> 36 -> 34 -> 9 -> 25 -> 1
+  Load: 96/100   Distance: 142
+
+Route 4: 1 -> 14 -> 3 -> 37 -> 18 -> 10 -> 27 -> 20 -> 19 -> 1
+  Load: 97/100   Distance: 188
+
+Route 5: 1 -> 22 -> 13 -> 4 -> 5 -> 17 -> 7 -> 38 -> 26 -> 2 -> 29 -> 1
+  Load: 93/100   Distance: 321
+

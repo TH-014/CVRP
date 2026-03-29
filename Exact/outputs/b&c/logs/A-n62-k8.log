@@ -1,0 +1,22 @@
+
+============================================================
+Solving: ../../Dataset/A/A-n62-k8.vrp
+============================================================
+Instance: A-n62-k8
+Customers: 61  |  Depot: 1
+Capacity: 100  |  Vehicles: 8
+Total demand: 733  |  Tightness: 0.92
+  Heuristic upper bound: 1713.0
+  Solving root LP relaxation...
+  Root LP lower bound:   1228.09
+  Gap: 28.31%
+  B&B limits — time_limit: 600s  |  max_nodes: 5000
+  Time limit reached after 2 nodes
+  B&B explored 2 nodes. Best cost: 1713.0
+
+Final solution:
+  Cost        : 1713
+  Routes used : 8
+  Time        : 697.5s
+  Saved: ../outputs/b&c/A-n62-k8_solution.txt
+  Saved: ../outputs/b&c/A-n62-k8_plot.png

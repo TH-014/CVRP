@@ -1,0 +1,24 @@
+
+============================================================
+Solving: ../../Dataset/A/A-n38-k5.vrp
+============================================================
+Instance: A-n38-k5
+Customers: 37  |  Depot: 1
+Capacity: 100  |  Vehicles: 5
+Total demand: 481  |  Tightness: 0.96
+  Heuristic upper bound: 1052.0
+  Solving root LP relaxation...
+  Root LP lower bound:   708.00
+  Gap: 32.70%
+  B&B limits — time_limit: 600s  |  max_nodes: 5000
+  Node 26: new best = 1014.0
+  Node 27: new best = 986.0
+  Time limit reached after 85 nodes
+  B&B explored 85 nodes. Best cost: 986.0
+
+Final solution:
+  Cost        : 986
+  Routes used : 5
+  Time        : 600.1s
+  Saved: ../outputs/b&c/A-n38-k5_solution.txt
+  Saved: ../outputs/b&c/A-n38-k5_plot.png

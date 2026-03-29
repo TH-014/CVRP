@@ -1,0 +1,34 @@
+Instance: A-n63-k10
+Capacity: 100  |  Vehicles used: 10
+Total distance: 1860
+
+Route 1: 1 -> 49 -> 53 -> 37 -> 31 -> 5 -> 51 -> 30 -> 1
+  Load: 100/100   Distance: 114
+
+Route 2: 1 -> 21 -> 27 -> 14 -> 29 -> 58 -> 45 -> 8 -> 1
+  Load: 100/100   Distance: 140
+
+Route 3: 1 -> 18 -> 63 -> 32 -> 25 -> 22 -> 62 -> 55 -> 46 -> 41 -> 1
+  Load: 99/100   Distance: 183
+
+Route 4: 1 -> 39 -> 44 -> 11 -> 60 -> 6 -> 40 -> 19 -> 50 -> 16 -> 1
+  Load: 99/100   Distance: 205
+
+Route 5: 1 -> 26 -> 20 -> 43 -> 2 -> 42 -> 15 -> 54 -> 57 -> 12 -> 1
+  Load: 100/100   Distance: 295
+
+Route 6: 1 -> 33 -> 35 -> 48 -> 52 -> 59 -> 23 -> 24 -> 1
+  Load: 97/100   Distance: 171
+
+Route 7: 1 -> 17 -> 28 -> 9 -> 38 -> 61 -> 1
+  Load: 100/100   Distance: 176
+
+Route 8: 1 -> 47 -> 56 -> 1
+  Load: 88/100   Distance: 154
+
+Route 9: 1 -> 4 -> 3 -> 10 -> 13 -> 1
+  Load: 84/100   Distance: 200
+
+Route 10: 1 -> 34 -> 7 -> 36 -> 1
+  Load: 65/100   Distance: 222
+
