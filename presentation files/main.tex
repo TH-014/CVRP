@@ -1,0 +1,816 @@
+\documentclass{beamer}
+% \usetheme{Madrid}
+\usetheme{Madrid}
+\usecolortheme{beaver}
+
+% Make blocks red
+\setbeamercolor{block title}{bg=red!60!black, fg=white}
+\setbeamercolor{block body}{bg=red!10, fg=black}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usetikzlibrary{positioning}
+
+% --- Citation support ---
+\usepackage[backend=bibtex, style=numeric, sorting=none]{biblatex}
+\addbibresource{references.bib}
+
+\tikzset{ varbox/.style={ draw, rounded corners, fill=gray!10, minimum width=3.5cm, align=left, font=\small } }
+
+\setbeamertemplate{navigation symbols}{}
+
+\title{Capacitated Vehicle Routing Problem}
+\subtitle{CVRP}
+\author{}
+\date{}
+
+\begin{document}
+
+% Slide 1: Title Slide
+\begin{frame}
+\titlepage
+\begin{center}
+\Large{Optimizing Delivery Routes with Capacity Constraints}
+\end{center}
+\end{frame}
+
+% Slide 2: What is CVRP?
+\begin{frame}{What is the Capacitated Vehicle Routing Problem?}
+
+\begin{block}{Definition}
+The Capacitated Vehicle Routing Problem (CVRP) is a combinatorial optimization problem where a fleet of vehicles with limited capacity must deliver goods to multiple customers from a central depot, minimizing total travel distance or cost \cite{augerat1995computational}.
+\end{block}
+
+\vspace{0.5cm}
+\begin{columns}[t]
+
+\column{0.25\textwidth}
+\begin{center}
+\textbf{Central Depot}\\
+\vspace{0.2cm}
+Starting and ending point for all vehicles
+\end{center}
+
+\column{0.25\textwidth}
+\begin{center}
+\textbf{Fleet of Vehicles}\\
+\vspace{0.2cm}
+Multiple vehicles used to serve all customers
+\end{center}
+
+\column{0.25\textwidth}
+\begin{center}
+\textbf{Limited Capacity}\\
+\vspace{0.2cm}
+Each vehicle has maximum load capacity
+\end{center}
+
+\column{0.25\textwidth}
+\begin{center}
+\textbf{Customer Demands}\\
+\vspace{0.2cm}
+Each customer has specific delivery requirements
+\end{center}
+
+\end{columns}
+
+\end{frame}
+
+% Slide 3: Problem Components
+\begin{frame}{Key Components of CVRP}
+
+\begin{itemize}
+\item \textbf{Depot (Central Warehouse):} A single starting location where all vehicles begin and end their routes
+
+\vspace{0.3cm}
+
+\item \textbf{Vehicle Fleet:} A set of $m$ identical or homogeneous vehicles, each with capacity $Q$
+
+\vspace{0.3cm}
+
+\item \textbf{Customers:} A set of $n$ customers, each located at specific coordinates with demand $d_i$
+
+\vspace{0.3cm}
+
+\item \textbf{Distance Matrix:} Known distances or costs $c_{ij}$ between all pairs of locations (depot and customers)
+
+\vspace{0.3cm}
+
+\item \textbf{Capacity Constraint:} Total demand on any route cannot exceed vehicle capacity $Q$
+\end{itemize}
+
+\end{frame}
+
+% Slide 4: Mathematical Formulation
+\begin{frame}{CVRP Mathematical Formulation}
+
+\begin{columns}[T]
+
+%------------ Left Column ------------
+\column{0.48\textwidth}
+
+\textbf{Objective Function}
+
+\begin{equation*}
+\text{Minimize: } \sum_{i} \sum_{j} c_{ij} \cdot x_{ij}
+\end{equation*}
+
+\small (Total travel cost / distance)
+
+\vspace{0.5cm}
+
+%------------ Right Column ------------
+\column{0.48\textwidth}
+
+\textbf{Constraints}
+
+\begin{enumerate}
+\item \textbf{Visit each customer once:}
+\[
+\sum_{j} x_{ij} = 1 \quad \forall i
+\]
+
+\item \textbf{Capacity constraint:}
+\[
+\sum_{i} d_i \leq Q
+\]
+
+\item \textbf{Flow conservation:} \\
+Flow in = Flow out
+
+\item \textbf{Depot condition:} \\
+Start and end at depot
+
+\end{enumerate}
+
+\end{columns}
+
+\end{frame}
+
+% Slide 5: Example Visualization
+\begin{frame}{CVRP Example}
+
+\begin{columns}[c]
+
+\column{0.45\textwidth}
+\small
+\textbf{Problem Setup:}
+\begin{itemize}
+\item Depot: Central warehouse
+\item Vehicles: 3 trucks
+\item Capacity: 100 units each
+\item Customers: 9 locations
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{Customer Demands:}\\
+\scriptsize
+\begin{tabular}{ccc}
+C1: 30 & C2: 25 & C3: 40 \\
+C4: 35 & C5: 45 & C6: 20 \\
+C7: 50 & C8: 30 & C9: 15 \\
+\end{tabular}
+
+\vspace{0.2cm}
+
+\textbf{Solution:}\\
+\scriptsize
+\begin{itemize}
+\item Route 1: 95 units
+\item Route 2: 100 units
+\item Route 3: 95 units
+\end{itemize}
+
+\column{0.55\textwidth}
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+
+% Depot
+\node[circle, fill=red, minimum size=12pt, label=below:\small Depot] (depot) at (0,0) {};
+
+% Route 1 (Blue)
+\node[circle, fill=blue, minimum size=8pt, label=left:\tiny C1] (c1) at (-1.8,1.5) {};
+\node[circle, fill=blue, minimum size=8pt, label=above:\tiny C2] (c2) at (-0.8,2.3) {};
+\node[circle, fill=blue, minimum size=8pt, label=right:\tiny C3] (c3) at (0.8,1.8) {};
+
+% Route 2 (Green)
+\node[circle, fill=green, minimum size=8pt, label=above:\tiny C4] (c4) at (2,1) {};
+\node[circle, fill=green, minimum size=8pt, label=right:\tiny C5] (c5) at (2.8,0.3) {};
+\node[circle, fill=green, minimum size=8pt, label=right:\tiny C6] (c6) at (2.4,-0.8) {};
+
+% Route 3 (Orange)
+\node[circle, fill=orange, minimum size=8pt, label=below:\tiny C7] (c7) at (-0.8,-1.5) {};
+\node[circle, fill=orange, minimum size=8pt, label=below:\tiny C8] (c8) at (-2,-2.3) {};
+\node[circle, fill=orange, minimum size=8pt, label=below:\tiny C9] (c9) at (-0.4,-2.6) {};
+
+% Edges
+\draw[blue, thick, ->, >=stealth] (depot) -- (c1) -- (c2) -- (c3) -- (depot);
+\draw[green, thick, ->, >=stealth] (depot) -- (c4) -- (c5) -- (c6) -- (depot);
+\draw[orange, thick, ->, >=stealth] (depot) -- (c7) -- (c8) -- (c9) -- (depot);
+
+\end{tikzpicture}
+\end{center}
+
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Proving CVRP is NP-Hard}
+\begin{block}{Our Approach}
+We prove CVRP is NP-Hard by showing a polynomial-time reduction from the Traveling Salesman Problem (TSP).
+\end{block}
+
+\vspace{0.5cm}
+
+\begin{columns}[T]
+\column{0.48\textwidth}
+\centering
+\textbf{Known:}\\
+TSP is NP-Hard
+
+\column{0.48\textwidth}
+\centering
+\textbf{To Prove:}\\
+CVRP is NP-Hard
+\end{columns}
+
+\vspace{0.5cm}
+
+\begin{center}
+\Large
+$\text{TSP} \leq_P \text{CVRP}$
+\end{center}
+\end{frame}
+
+\section{Visual Reduction: TSP $\rightarrow$ CVRP}
+
+%----------------------------------
+\begin{frame}{Step 1: Traveling Salesman Problem (TSP)}
+\centering
+
+\begin{tikzpicture}[scale=1.1]
+
+\node[circle, draw, fill=gray!20] (1) at (0,1.5) {1};
+\node[circle, draw, fill=gray!20] (2) at (2,2.5) {2};
+\node[circle, draw, fill=gray!20] (3) at (4,1.5) {3};
+\node[circle, draw, fill=gray!20] (4) at (3,0) {4};
+\node[circle, draw, fill=gray!20] (5) at (1,0) {5};
+
+\draw (1)--(2)--(3)--(4)--(5)--(1);
+
+\end{tikzpicture}
+
+\vspace{1em}
+\footnotesize
+All nodes are identical — find a minimum Hamiltonian cycle
+\end{frame}
+
+%----------------------------------
+\begin{frame}{Step 2: Choose a Depot}
+\centering
+
+\begin{tikzpicture}[scale=1.1]
+
+\node[circle, draw, fill=blue!40] (D) at (0,1.5) {\textbf{D}};
+\node[circle, draw, fill=gray!20] (2) at (2,2.5) {2};
+\node[circle, draw, fill=gray!20] (3) at (4,1.5) {3};
+\node[circle, draw, fill=gray!20] (4) at (3,0) {4};
+\node[circle, draw, fill=gray!20] (5) at (1,0) {5};
+
+\draw (D)--(2)--(3)--(4)--(5)--(D);
+
+\end{tikzpicture}
+
+\vspace{1em}
+\footnotesize
+Select any node as the depot
+\end{frame}
+
+%----------------------------------
+\begin{frame}{Building the CVRP Instance (from TSP)}
+\centering
+
+\begin{tikzpicture}[scale=1.05]
+
+%---------------- Graph ----------------
+\node[circle, draw, fill=blue!40] (D) at (0,1.5) {\textbf{D}};
+\node[circle, draw, fill=green!40] (2) at (2,2.5) {2};
+\node[circle, draw, fill=green!40] (3) at (4,1.5) {3};
+\node[circle, draw, fill=green!40] (4) at (3,0) {4};
+\node[circle, draw, fill=green!40] (5) at (1,0) {5};
+
+\draw (D)--(2)--(3)--(4)--(5)--(D);
+
+%---------------- Demand Labels ----------------
+\only<2->{
+\node[above] at (2.north) {$d=1$};
+\node[above] at (3.north) {$d=1$};
+\node[right] at (4.east) {$d=1$};
+\node[left] at (5.west) {$d=1$};
+}
+
+%---------------- Route ----------------
+\only<3->{
+\draw (D)--(2)--(3)--(4)--(5)--(D);
+}
+
+%---------------- Variable Box ----------------
+\node[varbox, right=3cm of 3] {
+\textbf{CVRP Parameters}\\[0.3em]
+\only<1->{Customers: n - 1\\}
+\only<2->{Demand: $d_i = 1$\\}
+\only<3->{Vehicles: $m = 1$\\}
+\only<4->{Capacity: $Q = n-1$}
+};
+
+\end{tikzpicture}
+
+\vspace{0.8em}
+\footnotesize
+\only<1>{Define customers}
+\only<2>{Assign unit demands}
+\only<3>{Restrict to one vehicle}
+\only<4>{Capacity forces a single tour}
+\end{frame}
+
+%----------------------------------
+\begin{frame}{Key Insight}
+\begin{block}{Crucial Observation}
+By setting
+\[
+vehicles = 1, \quad demand = 1, \quad capacity = n-1
+\]
+\end{block}
+
+\begin{block}{Equivalence}
+One CVRP route visiting all customers  
+$\Longleftrightarrow$  
+One TSP Hamiltonian cycle
+\end{block}
+\end{frame}
+
+%----------------------------------
+\begin{frame}{NP-Hardness Conclusion}
+\[
+\text{TSP} \;\leq_p\; \text{CVRP}
+\]
+
+\vspace{1em}
+
+\begin{block}{Conclusion}
+Since TSP is NP-Hard, the Capacitated Vehicle Routing Problem is NP-Hard.
+\end{block}
+\end{frame}
+
+\section{Taxonomy of Algorithms}
+
+\begin{frame}[allowframebreaks]{Algorithm Categories Defined}
+    Before detailing specific CVRP algorithms, we must define the classes of algorithms used in operations research.
+    
+    \vspace{1em}
+    \textbf{1. Exact Algorithms}
+    \begin{itemize}
+        \item \textbf{Definition:} Algorithms that guarantee finding the \textit{globally optimal} solution.
+        \item \textbf{Pros:} Proof of optimality.
+        \item \textbf{Cons:} Exponential time complexity ($O(2^n)$ or worse). Only feasible for small instances ($n < 200$).
+    \end{itemize}
+
+    \framebreak
+
+    \textbf{2. Approximation Algorithms}
+    \begin{itemize}
+        \item \textbf{Definition:} Polynomial-time algorithms that provide a guarantee on the solution quality.
+        \item \textbf{The Guarantee ($\alpha$):} An algorithm is an $\alpha$-approximation if for any instance, the solution $Sol \le \alpha \times Opt$.
+        \item \textbf{Context:} For general CVRP, finding a constant factor approximation is difficult due to the hardness of Bin Packing.
+    \end{itemize}
+
+    \framebreak
+
+    \textbf{3. Heuristics}
+    \begin{itemize}
+        \item \textbf{Definition:} "Rule of thumb" techniques. They use problem-specific knowledge to find "good enough" solutions quickly.
+        \item \textbf{No Guarantees:} Unlike approximation algorithms, they do not guarantee a bound on the error.
+        \item \textbf{Types:}
+        \begin{itemize}
+            \item \textit{Constructive:} Build a solution from scratch.
+            \item \textit{Improvement:} Take an existing solution and try to make it better.
+        \end{itemize}
+    \end{itemize}
+
+    \framebreak
+
+    \textbf{4. Metaheuristics}
+    \begin{itemize}
+        \item \textbf{Definition:} High-level problem-independent frameworks that guide local search heuristics to escape local optima.
+        \item \textbf{Mechanism:} They balance \textit{Exploration} (searching new areas of the solution space) and \textit{Exploitation} (refining the current best solution).
+        \item \textbf{Examples:} Genetic Algorithms, Tabu Search, Simulated Annealing.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Existing Algorithms}
+\resizebox{\textwidth}{!}{%
+  \begin{tabular}{l l l}
+    \toprule
+    \textbf{Category} & \textbf{Algorithm} & \textbf{Key Features} \\
+    \midrule
+    \textbf{Exact} & Branch and Bound \cite{laporte1983branch} & Enumerates candidate solutions by forming a rooted tree \\ & \textbf{Branch-and-Cut} \cite{augerat1995computational} & Uses capacity cuts and comb inequalities. \\
+                   & Branch-Cut-and-Price \cite{fukasawa2006robust} & State-of-the-art; uses Column Generation. \\
+    \midrule
+    \textbf{Approximation} & Christofides' Ext. \cite{christofides1979set} & Extensions of TSP approx; mostly theoretical. \\
+    \midrule
+    \textbf{Heuristic} & Clarke \& Wright \cite{shour2015modified} & Greedy merging based on "savings" ($s_{ij}$). \\
+                       & \textbf{Sweep Algorithm} \cite{sehta2021sweep} & Clusters by polar angle, solves TSP per cluster. \\
+    \midrule
+    \textbf{Metaheuristic} & Tabu Search \cite{barbarosoglu1999tabu} & Local search with memory structures. \\
+                           & \textbf{Genetic Algorithm} \cite{jasim2024guided} & Population-based; often uses "Giant Tour" split. \\
+                           & Large Neighborhood Search \cite{gu2019adaptive} & Destroy part of the solution and recreate it \\
+    \bottomrule
+  \end{tabular}
+}
+\end{frame}
+
+
+% -----------------------------------------------------------------------------
+% SECTION 4: EXACT ALGORITHMS
+% -----------------------------------------------------------------------------
+\section{Exact Algorithms for CVRP}
+
+\begin{frame}{Branch and Bound (B\&B)}
+    \textbf{Concept:} 
+    Systematically enumerates candidate solutions by forming a rooted tree \cite{laporte1983branch}.
+    
+    \textbf{Mechanism:}
+    \begin{enumerate}
+        \item \textbf{Branching:} Splits the problem into smaller subproblems (e.g., "Edge $x_{12}$ must be used" vs "Edge $x_{12}$ cannot be used").
+        \item \textbf{Bounding:} Calculates a lower bound for each subproblem (usually via Linear Relaxation).
+        \item \textbf{Pruning:} If a subproblem's Lower Bound $>$ Current Best Solution, that branch is discarded (pruned).
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Branch and Cut (B\&C)}
+    \textbf{Enhancement to B\&B:}
+    Standard B\&B is weak because the Linear Relaxation of CVRP is often too loose. B\&C adds \textit{Valid Inequalities} (Cuts) to tighten the relaxation \cite{augerat1995computational}.
+    
+    \textbf{Famous Cuts:}
+    \begin{itemize}
+        \item \textbf{Rounded Capacity Cuts:} Ensures demand constraints are met for subsets.
+        \item \textbf{Comb Inequalities:} Generalized from TSP to handle connectivity.
+        \item \textbf{Framed Capacity Cuts:} Specific to VRP, combining capacity and geometric constraints.
+    \end{itemize}
+    \textit{Status:} Currently effective for $n \approx 100-150$.
+\end{frame}
+
+\begin{frame}{Branch-Cut-and-Price (BCP)}
+    \textbf{The State-of-the-Art:}
+    Combines Branch-and-Bound with \textbf{Column Generation} \cite{fukasawa2006robust}.
+    
+    \textbf{Set Partitioning Formulation:}
+    Instead of deciding edges ($x_{ij}$), we decide which \textit{Routes} ($r_k$) to select.
+    $$ \min \sum_{r \in \Omega} c_r \lambda_r $$
+    Subject to: Each customer is in exactly one route.
+    
+    \textbf{Column Generation:}
+    Since the set of possible routes $\Omega$ is exponential, we start with a few. We generate new "promising" routes dynamically by solving a \textbf{Pricing Subproblem} (usually a Shortest Path Problem with Resource Constraints - SPPRC).
+    
+    \textit{Status:} Can solve instances up to $n \approx 200-300$.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+% SECTION 5: HEURISTIC ALGORITHMS
+% -----------------------------------------------------------------------------
+\section{Classical Heuristic Algorithms}
+
+\begin{frame}{Constructive Heuristics}
+    These algorithms build a feasible solution from scratch.
+    
+    \textbf{A. Clarke and Wright Savings Algorithm} \cite{shour2015modified}
+    \begin{itemize}
+        \item \textbf{Init:} $n$ routes ($0 \to i \to 0$).
+        \item \textbf{Metric:} Savings $s_{ij} = c_{i0} + c_{0j} - c_{ij}$.
+        \item \textbf{Step:} Merge routes with max $s_{ij}$ if capacity allows.
+        \item \textbf{Complexity:} $O(n^2 \log n)$.
+    \end{itemize}
+    
+    \textbf{B. Sweep Algorithm} \cite{sehta2021sweep}
+    \begin{itemize}
+        \item \textbf{Geometric approach.}
+        \item Sort customers by polar angle around the depot.
+        \item "Sweep" around, adding customers to a vehicle until capacity $Q$ is full, then start a new vehicle.
+        \item Solve TSP for each cluster.
+    \end{itemize}
+\end{frame}
+
+% \begin{frame}{Improvement Heuristics (Local Search)}
+%     These start with a solution and iteratively improve it.
+    
+%     \textbf{Intra-Route Moves (TSP-like)}
+%     \begin{itemize}
+%         \item \textbf{2-Opt:} Remove two edges, reconnect to uncross lines.
+%         \item \textbf{Or-Opt:} Move a chain of 3 consecutive nodes to a different position.
+%     \end{itemize}
+    
+%     \textbf{Inter-Route Moves (VRP-specific)}
+%     \begin{itemize}
+%         \item \textbf{Relocate:} Move customer $i$ from Route A to Route B.
+%         \item \textbf{Swap:} Exchange customer $i$ (Route A) with customer $j$ (Route B).
+%         \item \textbf{Cross:} Exchange the tails of two routes.
+%     \end{itemize}
+% \end{frame}
+
+% -----------------------------------------------------------------------------
+% SECTION 6: METAHEURISTICS
+% -----------------------------------------------------------------------------
+\section{Metaheuristic Algorithms}
+
+\begin{frame}{Tabu Search (TS)}
+    \textbf{Mechanism:} \cite{barbarosoglu1999tabu}
+    \begin{itemize}
+        \item Performs local search (like Swap/Relocate).
+        \item \textbf{The Tabu List:} To prevent cycling (A $\to$ B $\to$ A), recent moves are declared "Tabu" (forbidden) for a certain number of iterations.
+        \item \textbf{Aspiration Criterion:} Can override Tabu status if the move produces a new global best solution.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Genetic Algorithms (GA)}
+    \textbf{Biological Analogy:} Evolution \cite{jasim2024guided}.
+    \begin{itemize}
+        \item \textbf{Population:} A set of solutions (Chromosomes).
+        \item \textbf{Crossover:} Combine parents to create offspring (e.g., Order Crossover).
+        \item \textbf{Mutation:} Randomly tweak a child to maintain diversity.
+        \item \textbf{Selection:} Survival of the fittest.
+    \end{itemize}
+    \textbf{VRP Specialization:}
+    Most successful VRP GAs use a \textbf{"Giant Tour"} representation (a single sequence of all customers) and a \textbf{Split Algorithm} to optimally break the sequence into routes.
+\end{frame}
+
+\begin{frame}{Ant Colony Optimization (ACO)}
+    \textbf{Biological Analogy:} Foraging ants \cite{stodola2014aco}.
+    \begin{itemize}
+        \item \textbf{Pheromones:} Artificial agents (ants) construct routes probabilistically based on "pheromone trails" $\tau_{ij}$ on edges.
+        \item \textbf{Update:} Good routes receive more pheromone; unused edges evaporate.
+        \item \textbf{Result:} Over time, the colony converges on the optimal path.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Large Neighborhood Search (LNS)}
+    \textbf{Mechanism:} Ruin and Recreate \cite{gu2019adaptive}.
+    \begin{itemize}
+        \item \textbf{Ruin:} Intentionally destroy part of the solution (e.g., remove 20\% of customers randomly or spatially).
+        \item \textbf{Recreate:} Re-insert the removed customers using a greedy heuristic or regret heuristic.
+        \item \textbf{ALNS (Adaptive LNS):} Automatically selects which "Ruin" and "Recreate" operators work best for the current instance.
+    \end{itemize}
+\end{frame}
+
+% % ---------------------------------------------------------------
+\section{Implementation}
+% % ---------------------------------------------------------------
+
+\begin{frame}{Exact Algorithm Implementation}
+
+Two independent Python implementations were developed to solve
+the CVRP exactly, both tested on standard \texttt{.vrp} benchmark
+instances.
+
+\vspace{0.6em}
+
+%----- Side-by-side comparison ------------------------------------
+\begin{table}[t]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lll}
+\toprule
+\textbf{Aspect} & \textbf{Custom B\&C} & \textbf{OR-Tools} \\
+\midrule
+LP / MIP engine   & \texttt{scipy} HiGHS           & OR-Tools CP engine \\
+Cuts added        & Capacity + Comb                & Internal (hidden)  \\
+First solution    & Nearest-neighbour + 2-opt      & Multi-strategy     \\
+Improvement       & B\&B with LIFO stack           & GLS / Tabu / SA    \\
+Optimality proof  & Yes (within node budget)       & Yes (time limit)   \\
+Scalability       & $n \lesssim 50$                & $n \lesssim 200$   \\
+Dependencies      & \texttt{numpy, scipy}          & \texttt{ortools}   \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\vspace{0.4em}
+\footnotesize
+Both solvers accept standard TSPLIB \texttt{.vrp} files and are
+executed via the shell scripts \texttt{run\_bc.sh} and
+\texttt{run\_all.sh} for batch benchmarking.
+
+\end{frame}
+
+% ---------------------------------------------------------------
+% Results Slides (drop-in replacement for results_slide.tex)
+% Requires in preamble:
+  % \usepackage{booktabs}
+  % \usepackage{colortbl}
+  % \usepackage{xcolor}
+  % \usepackage{amsmath}
+  % \usepackage{graphicx}
+  % \usepackage{hyperref}
+%
+% Place the following image files in the same folder as main.tex:
+%   b&c_A-n80-k10_plot.png
+%   ortools_A-n80-k10_plot.png
+% ---------------------------------------------------------------
+
+\section{Experimental Results}
+
+% ================================================================
+% FRAME 1 — Setup + Table Part 1 (instances 1–14)
+% ================================================================
+\begin{frame}{Results: Custom B\&C vs.\ OR-Tools \hfill {\small (1/2)}}
+
+\begin{block}{Experimental Setup}
+\small
+Tested on \textbf{27 Augerat Set-A benchmarks} ($n = 31$--$79$ customers).
+\textbf{Time limits:} OR-Tools $= 360\,\text{s}$,\; Custom B\&C $= 600\,\text{s}$.
+Known optimal distances used as ground truth.
+\end{block}
+
+\vspace{0.3em}
+
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l r r r r r r r}
+\toprule
+\textbf{Instance} & \textbf{$n$} & \textbf{$k$} & \textbf{Optimal} &
+\textbf{B\&C} & \textbf{B\&C Gap (\%)} &
+\textbf{OR-Tools} & \textbf{ORT Gap (\%)} \\
+\midrule
+A-n32-k5  & 31 & 5 & 784  & 926  & 18.11 & \cellcolor{green!25}784  & \cellcolor{green!25}0.00 \\
+A-n33-k5  & 32 & 5 & 661  & \cellcolor{green!25}661  & \cellcolor{green!25}0.00 & \cellcolor{green!25}661  & \cellcolor{green!25}0.00 \\
+A-n33-k6  & 32 & 6 & 742  & 836  & 12.67 & \cellcolor{green!25}742  & \cellcolor{green!25}0.00 \\
+A-n34-k5  & 33 & 5 & 778  & 805  &  3.47 & \cellcolor{green!25}778  & \cellcolor{green!25}0.00 \\
+A-n36-k5  & 35 & 5 & 799  & 1031 & 29.04 & \cellcolor{green!25}799  & \cellcolor{green!25}0.00 \\
+A-n37-k5  & 36 & 5 & 669  & 756  & 13.00 & \cellcolor{green!25}669  & \cellcolor{green!25}0.00 \\
+A-n37-k6  & 36 & 6 & 949  & 1271 & 33.93 & \cellcolor{green!25}949  & \cellcolor{green!25}0.00 \\
+A-n38-k5  & 37 & 5 & 730  & 986  & 35.07 & \cellcolor{green!25}730  & \cellcolor{green!25}0.00 \\
+A-n39-k5  & 38 & 5 & 822  & 1028 & 25.06 & 825  & 0.36 \\
+A-n39-k6  & 38 & 6 & 831  & 957  & 15.16 & 833  & 0.24 \\
+A-n44-k6  & 43 & 6 & 937  & 1343 & 43.33 & 939  & 0.21 \\
+A-n45-k6  & 44 & 6 & 944  & 1422 & 50.64 & 951  & 0.74 \\
+A-n45-k7  & 44 & 7 & 1146 & 1383 & 20.68 & \cellcolor{green!25}1146 & \cellcolor{green!25}0.00 \\
+A-n46-k7  & 45 & 7 & 914  & 1117 & 22.21 & \cellcolor{green!25}914  & \cellcolor{green!25}0.00 \\
+\bottomrule
+\end{tabular}
+}
+
+\vspace{0.2em}
+\footnotesize
+\textcolor{green!60!black}{$\blacksquare$}~Optimal reached \quad (\textit{continued on next page})
+
+\end{frame}
+
+% ================================================================
+%         Table Part 2 (instances 15–27)
+% ================================================================
+\begin{frame}{Results: Custom B\&C vs.\ OR-Tools \hfill {\small (2/2)}}
+
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l r r r r r r r}
+\toprule
+\textbf{Instance} & \textbf{$n$} & \textbf{$k$} & \textbf{Optimal} &
+\textbf{B\&C} & \textbf{B\&C Gap (\%)} &
+\textbf{OR-Tools} & \textbf{ORT Gap (\%)} \\
+\midrule
+A-n48-k7  & 47 & 7  & 1073 & 1453 & 35.41 & \cellcolor{green!25}1073 & \cellcolor{green!25}0.00 \\
+A-n53-k7  & 52 & 7  & 1010 & 1385 & 37.13 & 1017 & 0.69 \\
+A-n54-k7  & 53 & 7  & 1167 & 1386 & 18.77 & 1170 & 0.26 \\
+A-n55-k9  & 54 & 9  & 1073 & 1472 & 37.19 & 1074 & 0.09 \\
+A-n60-k9  & 59 & 9  & 1354 & 1775 & 31.09 & \cellcolor{green!25}1354 & \cellcolor{green!25}0.00 \\
+% A-n61-k9  & 60 & 9  & 1034 & 1354 & 30.95 & \cellcolor{red!20}1184 & \cellcolor{red!20}14.51 \\
+A-n62-k8  & 61 & 8  & 1288 & 1713 & 33.00 & 1306 & 1.40 \\
+A-n63-k10 & 62 & 10 & 1314 & 1860 & 41.55 & 1321 & 0.53 \\
+A-n63-k9  & 62 & 9  & 1616 & 2139 & 32.36 & 1641 & 1.55 \\
+A-n64-k9  & 63 & 9  & 1401 & 1903 & 35.83 & 1419 & 1.28 \\
+A-n65-k9  & 64 & 9  & 1174 & 1694 & 44.29 & 1184 & 0.85 \\
+A-n69-k9  & 68 & 9  & 1159 & 1477 & 27.44 & 1170 & 0.95 \\
+A-n80-k10 & 79 & 10 & 1763 & 2290 & 29.89 & 1791 & 1.59 \\
+\midrule
+\textbf{Average} & & & & & \textbf{28.08} & & \textbf{1.06} \\
+\bottomrule
+\end{tabular}
+}
+
+\vspace{0.4em}
+
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{\small Custom B\&C (limit: 600\,s)}
+\footnotesize
+\begin{itemize}
+  \item Avg.\ gap: $\mathbf{28.08\%}$
+  \item Gap range: $0\%$ -- $50.64\%$
+\end{itemize}
+\end{block}
+
+\column{0.48\textwidth}
+\begin{block}{\small OR-Tools (limit: 360\,s)}
+\footnotesize
+\begin{itemize}
+  \item Avg.\ gap: $\mathbf{1.06\%}$
+  \item Gap range: $0\%$ -- $1.59\%$
+\end{itemize}
+\end{block}
+\end{columns}
+
+\end{frame}
+
+% ================================================================
+%         OR-Tools route plot (A-n80-k10)
+% ================================================================
+\begin{frame}{OR-Tools Solution — A-n80-k10}
+
+\begin{block}{Instance: A-n80-k10 \quad $n=79$,\; $k=10$,\; Optimal $= 1763$}
+OR-Tools result: $\mathbf{1791}$ \quad Gap: $\mathbf{1.59\%}$ \quad Time limit: $360\,\text{s}$
+\end{block}
+
+\vspace{0.3em}
+
+\begin{center}
+  \includegraphics[width=0.88\textwidth]{ortools_A-n80-k10_plot.png}
+\end{center}
+
+\end{frame}
+
+% ================================================================
+%         Custom B&C route plot (A-n80-k10)
+% ================================================================
+\begin{frame}{Custom B\&C Solution — A-n80-k10}
+
+\begin{block}{Instance: A-n80-k10 \quad $n=79$,\; $k=10$,\; Optimal $= 1763$}
+B\&C result: $\mathbf{2290}$ \quad Gap: $\mathbf{29.89\%}$ \quad Time limit: $600\,\text{s}$
+\end{block}
+
+\vspace{0.3em}
+
+\begin{center}
+  \includegraphics[width=0.88\textwidth]{b&c_A-n80-k10_plot.png}
+\end{center}
+
+\end{frame}
+
+%==================================================================
+%
+%     Add slides for heuristics below:
+%
+%==================================================================
+
+%==================================================================
+%
+%     Add slides for metaheuristics below:
+%
+%==================================================================
+
+% -----------------------------------------------------------------------------
+% REFERENCES
+% -----------------------------------------------------------------------------
+\section{References}
+
+\begin{frame}[allowframebreaks]{References}
+    \printbibliography[heading=none]
+\end{frame}
+
+% ================================================================
+%     Thank You
+% ================================================================
+\begin{frame}[c]{Thank You}
+
+\begin{center}
+
+\Large\textbf{Thank You!}
+
+\vspace{1.2em}
+
+\normalsize
+All source code, benchmark datasets, solution outputs, and route plots
+are available at:
+
+\vspace{0.8em}
+
+\large
+\texttt{\href{https://github.com/TH-014/CVRP.git}{https://github.com/TH-014/CVRP.git}}
+
+\vspace{1.5em}
+
+\normalsize
+\begin{block}{}
+\centering
+The repository includes implementations of the custom Branch-and-Cut
+solver, the OR-Tools-based solver, Sweep algorithm and Genetic algorithm based solver and their modified versions, shell scripts for batch benchmarking, and all generated plots for the Augerat Set-A instances.
+\end{block}
+
+\end{center}
+
+\end{frame}
+
+\end{document}
