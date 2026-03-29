@@ -249,60 +249,27 @@ def solve_cvrp(inst, time_limit=30, max_nodes=-1,
     )
 
     # ── Phase 1: build guaranteed first feasible solution ───────────────────
-    # For very tight instances (tightness > ~0.95) PATH_CHEAPEST_ARC can hang
-    # indefinitely because there is almost no slack to assign customers.
-    # We therefore try multiple strategies in order, each with a short time
-    # cap, and accept the first one that succeeds.
-    #
-    # Strategy order (fastest→most thorough for tight instances):
-    #   1. PATH_CHEAPEST_ARC          – fast, works for most instances
-    #   2. PARALLEL_CHEAPEST_INSERTION – better for tight capacity
-    #   3. LOCAL_CHEAPEST_INSERTION   – slower but handles extreme tightness
-    #   4. GLOBAL_CHEAPEST_ARC        – last resort
-
-    PHASE1_STRATEGIES = [
-        routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC,
-        routing_enums_pb2.FirstSolutionStrategy.PARALLEL_CHEAPEST_INSERTION,
-        routing_enums_pb2.FirstSolutionStrategy.LOCAL_CHEAPEST_INSERTION,
-        routing_enums_pb2.FirstSolutionStrategy.GLOBAL_CHEAPEST_ARC,
-    ]
-    PHASE1_NAMES = [
-        'PATH_CHEAPEST_ARC',
-        'PARALLEL_CHEAPEST_INSERTION',
-        'LOCAL_CHEAPEST_INSERTION',
-        'GLOBAL_CHEAPEST_ARC',
-    ]
-
-    # Cap each phase-1 attempt to at most 20 % of total budget (min 10 s)
-    phase1_cap = max(10, time_limit // 5)
+    # PATH_CHEAPEST_ARC always finds a feasible solution instantly.
+    # We run it without a time limit so we always get at least one solution.
+    phase1_params = pywrapcp.DefaultRoutingSearchParameters()
+    phase1_params.first_solution_strategy = (
+        routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC)
+    phase1_params.log_search = False
 
     t0 = time.time()
-    phase1_solution = None
-
-    for strat_enum, strat_name in zip(PHASE1_STRATEGIES, PHASE1_NAMES):
-        phase1_params = pywrapcp.DefaultRoutingSearchParameters()
-        phase1_params.first_solution_strategy = strat_enum
-        phase1_params.time_limit.FromSeconds(phase1_cap)
-        phase1_params.log_search = False
-
-        print(f'  [Phase 1] Trying {strat_name} (cap {phase1_cap}s)...')
-        candidate = routing.SolveWithParameters(phase1_params)
-
-        if candidate is not None:
-            phase1_solution = candidate
-            phase1_cost = phase1_solution.ObjectiveValue()
-            print(f'  [Phase 1] Feasible solution found via {strat_name}  '                  f'cost={phase1_cost}')
-            break
-        else:
-            print(f'  [Phase 1] {strat_name} failed, trying next strategy...')
+    phase1_solution = routing.SolveWithParameters(phase1_params)
 
     if phase1_solution is None:
         solve_time = time.time() - t0
-        print('  [Phase 1] All strategies exhausted – instance may be infeasible.')
         return dict(routes=[], cost=None, status='INFEASIBLE',
                     lower_bound=None, gap_pct=None, solve_time=solve_time)
 
+    phase1_cost = phase1_solution.ObjectiveValue()
+    print(f'  [Phase 1] Initial feasible solution cost: {phase1_cost}')
+
     # ── Phase 2: improve with chosen metaheuristic ───────────────────────────
+    # Use the user-selected first_solution_strategy and local_search,
+    # with the full time budget.
     search_params = pywrapcp.DefaultRoutingSearchParameters()
 
     fs_key = first_solution_strategy.lower()
@@ -325,14 +292,12 @@ def solve_cvrp(inst, time_limit=30, max_nodes=-1,
 
     search_params.log_search = log_search
 
-    print(f'  [Phase 2] Improving solution ({remaining}s remaining)...')
     solution = routing.SolveWithParameters(search_params)
     solve_time = time.time() - t0
 
     # If phase 2 found nothing better, fall back to phase 1 result
     if solution is None:
         solution = phase1_solution
-        print('  [Phase 2] No improvement found, using Phase 1 solution.')
 
     # ── Status map ───────────────────────────────────────────────────────────
     status_map = {
