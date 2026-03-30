@@ -1,0 +1,39 @@
+========== GILLETT & MILLER SWEEP CVRP ==========
+Instance       : A-n65-k9.vrp
+Customers      : 64
+Vehicle Cap    : 100
+Routes         : 10
+Total Cost     : 1373.0047
+Exec Time (s)  : 0.000684
+==================================================
+
+Route 1  [demand=98/100, dist=178.1687]:
+  1 6 46 62 43 39 3 17 42 61 1
+
+Route 2  [demand=92/100, dist=132.2306]:
+  1 50 5 37 36 51 38 31 1
+
+Route 3  [demand=87/100, dist=133.0375]:
+  1 44 28 4 15 23 16 1
+
+Route 4  [demand=82/100, dist=110.5372]:
+  1 48 35 32 10 1
+
+Route 5  [demand=100/100, dist=134.9939]:
+  1 52 18 27 7 65 47 40 55 1
+
+Route 6  [demand=95/100, dist=102.1228]:
+  1 63 29 24 58 49 12 64 8 1
+
+Route 7  [demand=93/100, dist=151.6357]:
+  1 30 19 20 53 25 14 13 2 34 1
+
+Route 8  [demand=82/100, dist=142.0280]:
+  1 56 11 9 26 22 1
+
+Route 9  [demand=87/100, dist=128.3909]:
+  1 54 60 57 45 1
+
+Route 10  [demand=61/100, dist=159.8593]:
+  1 33 21 59 41 1
+

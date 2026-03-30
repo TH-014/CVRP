@@ -1,0 +1,34 @@
+========== CVRP ENHANCED SWEEP ==========
+Instance      : A-n62-k8.vrp
+Customers     : 61
+Vehicle Cap   : 100
+Multi-starts  : 8
+Routes        : 8
+Total Cost    : 1386.2001
+Exec Time (s) : 0.076947
+=========================================
+
+Route 1  [demand=75/100, dist=115.92]:
+  1 8 30 44 9 11 52 1
+
+Route 2  [demand=74/100, dist=162.29]:
+  1 21 60 33 7 41 1
+
+Route 3  [demand=98/100, dist=218.00]:
+  1 56 27 34 59 18 51 58 62 1
+
+Route 4  [demand=98/100, dist=215.74]:
+  1 29 57 15 6 61 26 12 5 36 50 32 35 1
+
+Route 5  [demand=95/100, dist=135.32]:
+  1 16 13 19 31 2 49 1
+
+Route 6  [demand=97/100, dist=229.85]:
+  1 54 10 22 42 24 28 40 4 43 55 14 1
+
+Route 7  [demand=100/100, dist=177.47]:
+  1 39 20 47 25 48 46 1
+
+Route 8  [demand=96/100, dist=131.62]:
+  1 53 3 45 23 38 17 37 1
+
