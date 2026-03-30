@@ -29,7 +29,7 @@ set -euo pipefail
 
 # ── Defaults ─────────────────────────────────────────────────────────────────
 DATASET_DIR="../../Dataset/A"
-OUTPUT_DIR="../outputs"
+OUTPUT_DIR="../outputs/Ortools"
 CAPACITY=""
 N_VEHICLES=""
 TIME_LIMIT=360

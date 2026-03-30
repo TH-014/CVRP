@@ -30,7 +30,7 @@
 set -euo pipefail
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
-DATASET_DIR="../../A/A"
+DATASET_DIR="../../Dataset/A"
 TIME_LIMIT=120
 POP_SIZE=100
 GENERATIONS=300

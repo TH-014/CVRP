@@ -1140,39 +1140,6 @@ R4: $D\!\to\!C_3\!\to\!D$, cost $=8.00$\\
 \section{Overview of the Three Scripts}
 % ======================================================================
 
-% Page 3: Three Python Scripts — At a Glance  (extract.py column REMOVED)
-\begin{frame}{Two Python Scripts — At a Glance}
-
-\begin{columns}[T]
-
-\column{0.48\textwidth}
-\begin{block}{\small \texttt{cvrp\_sweep\_gillett.py}}
-\footnotesize
-\textbf{Gillett \& Miller Sweep}
-\begin{itemize}
-  \item Classic sweep heuristic
-  \item Single-pass polar-angle clustering
-  \item NN construction + 2-opt
-  \item Outputs \texttt{.txt} + \texttt{.png}
-\end{itemize}
-\end{block}
-
-\column{0.48\textwidth}
-\begin{block}{\small \texttt{cvrp\_enhanced.py}}
-\footnotesize
-\textbf{Enhanced Sweep}
-\begin{itemize}
-  \item Multi-start sweep ($K=8$)
-  \item 2-opt + Or-opt (1/2/3)
-  \item Inter-route relocate \& swap
-  \item Outputs \texttt{.txt} + \texttt{.png}
-\end{itemize}
-\end{block}
-
-\end{columns}
-
-\end{frame}
-
 % ── Data structures ─────────────────────────────────────────────────────
 \begin{frame}[fragile,shrink=12]{Data Structures — \texttt{Node} Class}
 
